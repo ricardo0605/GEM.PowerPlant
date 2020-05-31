@@ -18,8 +18,7 @@ namespace GEM.PowerPlant.Api
         {
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
-                //.WriteTo.File(new JsonFormatter(), @"c:\temp\logs\gem-powerplant.json", shared: true)
-                .WriteTo.Seq("http://localhost:5341")
+                .WriteTo.Seq("http://localhost:5340")
                 .CreateLogger();
 
             try
