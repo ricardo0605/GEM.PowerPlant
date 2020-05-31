@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  gem.powerplant.api:
+    image: ${DOCKER_REGISTRY-}gempowerplantapi
+    build:
+      context: .
+      dockerfile: source/GEM.PowerPlant.Api/Dockerfile
+  seq:
+    image: datalust/seq:latest
