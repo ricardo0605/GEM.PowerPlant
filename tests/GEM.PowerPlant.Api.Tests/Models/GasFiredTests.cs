@@ -1,4 +1,5 @@
 ﻿using GEM.PowerPlant.Api.Models;
+using System;
 using Xunit;
 
 namespace GEM.PowerPlant.Api.Tests
@@ -8,25 +9,23 @@ namespace GEM.PowerPlant.Api.Tests
         [Fact]
         public void ComputeTheMegaWattCostPerHour_WhenNew_ShouldReturnZero()
         {
-            // Arrange
-            var expectedValue = 0;
-
-            // Act
+            // Arrange - Act
             var sut = new GasFired();
 
             // Assert
-            Assert.Equal(expectedValue, sut.MegaWattCostPerHour);
+            Assert.True(float.IsNaN(sut.MegaWattCostPerHour));
         }
 
         [Theory]
-        [InlineData(13.4f, 1f, 17.42f)]
-        [InlineData(13.4f, 0.5f, 30.82f)]
-        [InlineData(13.4f, 0.3f, 48.686665f)]
-        public void ComputeTheMegaWattCostPerHour_WhenLoading_ShouldReturnTheApropriateValue(float euroMWh, float efficiency, float expectedValue)
+        [InlineData(13.4f, 20f, 1f, 19.40f)]
+        [InlineData(13.4f, 20f, 0.5f, 32.80f)]
+        [InlineData(13.4f, 20f, 0.3f, 50.67f)]
+        public void ComputeTheMegaWattCostPerHour_WhenLoading_ShouldReturnTheApropriateValue(float euroMWh, float co2, float efficiency, float expectedValue)
         {
             // Arrange - Act
             var sut = new GasFired()
             {
+                CO2 = co2,
                 Efficiency = efficiency,
                 Fuel = new EnergySource()
                 {
@@ -35,7 +34,7 @@ namespace GEM.PowerPlant.Api.Tests
             };
 
             // Assert
-            Assert.Equal(expectedValue, sut.MegaWattCostPerHour);
+            Assert.Equal(Math.Round(expectedValue, 2), Math.Round(sut.MegaWattCostPerHour, 2));
         }
     }
 }
