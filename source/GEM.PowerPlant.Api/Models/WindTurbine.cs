@@ -11,6 +11,7 @@
         //public float Capacity { get { return ComputeHowMuchEnergyItWillGerenateInOneHour(); } }
 
         /// <summary>
+        /// Compute how much energy will be generated.
         /// Example: if there is on average 25% wind during an hour, 
         /// a wind-turbine with a Pmax of 4 MW will generate 1MWh of energy.
         /// </summary>

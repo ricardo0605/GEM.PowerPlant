@@ -10,14 +10,12 @@
         public EnergySource Fuel { get; set; }
 
         /// <summary>
-        /// 
+        /// Compute the price to produce energy.
+        /// Note: kerosine(euro/Mwh): the price of kerosine per MWh
         /// </summary>
-        /// <returns></returns>
+        /// <returns>How much does it cost to produce a MWh</returns>
         protected override float ComputeTheMegaWattCostPerHour()
         {
-            if (Fuel.EuroPerMHh == default)
-                return base.ComputeTheMegaWattCostPerHour();
-
             return Fuel.EuroPerMHh * 1 / Efficiency;
         }
     }
