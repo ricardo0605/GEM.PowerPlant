@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace GEM.PowerPlant.Api.Controllers
 {
@@ -17,7 +16,7 @@ namespace GEM.PowerPlant.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            Log.Information("Get on GEM.PowerPlant.Api HealthCheck endpoint.");
+            logger.LogInformation("Get on GEM.PowerPlant.Api HealthCheck endpoint.");
 
             return Ok("GEM.PowerPlant.Api is running.");
         }
