@@ -21,7 +21,7 @@ namespace GEM.PowerPlant.Api.Services
 
         public IEnumerable<ResponseDetail> SolveUnitCommitment(RequestPayload payload)
         {
-            float loadNeeded = payload.Load;
+            float demandedLoad = payload.Load;
             var multitudes = new List<Multitude>();
 
             foreach (var item in payload.PowerPlants)
@@ -50,24 +50,28 @@ namespace GEM.PowerPlant.Api.Services
 
             for (int i = 0; i < arr.Length; i++)
             {
-                if (loadNeeded > 0)
+                if (demandedLoad > 0)
                 {
-                    if (loadNeeded >= arr[i].Power)
+                    if (demandedLoad >= arr[i].Power)
                     {
-                        if (arr[i + 1].Pmin > (loadNeeded - arr[i].Power))
-                            nextPmin = loadNeeded - arr[i + 1].Pmin;
+                        if (arr[i + 1].Pmin > (demandedLoad - arr[i].Power))
+                        {
+                            nextPmin = demandedLoad - arr[i + 1].Pmin;
+                        }
                         else
+                        {
                             nextPmin = arr[i].Power;
+                        }
 
-                        loadNeeded -= nextPmin;
+                        demandedLoad -= nextPmin;
                         arr[i].Power = nextPmin;
                     }
                     else
                     {
-                        if (loadNeeded >= arr[i].Pmin && loadNeeded <= arr[i].Power)
+                        if (demandedLoad >= arr[i].Pmin && demandedLoad <= arr[i].Power)
                         {
-                            arr[i].Power = loadNeeded;
-                            loadNeeded -= loadNeeded;
+                            arr[i].Power = demandedLoad;
+                            demandedLoad -= demandedLoad;
                         }
                     }
                 }
