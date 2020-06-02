@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
-using Serilog.Formatting.Json;
 using System.IO;
 
 namespace GEM.PowerPlant.Api
@@ -24,10 +23,9 @@ namespace GEM.PowerPlant.Api
                 .Enrich.WithProcessId()
                 .Enrich.WithThreadId()
                 .WriteTo.Console()
-                .WriteTo.File(path: @"c:\temp\gem\powerplantlog.txt", outputTemplate: "{Timestamp:G} {Message}{NewLine:1}{Exception:1}")
-                .WriteTo.File(new JsonFormatter(), @"c:\temp\gem\powerplantlog.json", rollingInterval: RollingInterval.Day)
-                //.WriteTo.MSSqlServer(DatabaseAccess.ConnectionString(context), nameof(ProcessMessageLog), columnOptions: columnOptions)
-                .WriteTo.Seq("http://localhost:5341")
+                //.WriteTo.File(path: @"c:\temp\gem\powerplantlog.txt", outputTemplate: "{Timestamp:G} {Message}{NewLine:1}{Exception:1}")
+                //.WriteTo.File(new JsonFormatter(), @"c:\temp\gem\powerplantlog.json", rollingInterval: RollingInterval.Day)
+                .WriteTo.Seq("http://172.28.1.2:5341")
                 .CreateLogger();
 
             try

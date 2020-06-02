@@ -7,13 +7,21 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "8888:80"
+    networks:
+      gem_net:
+        ipv4_address: 172.28.1.1
   seq:
     container_name: gemPowerPlantApiLog
     environment:
       - ACCEPT_EULA=Y
-    volumes:
-      - log-data:/var/lib/log-data
     ports:
       - "5341:80"
-volumes:
-  log-data:
+    networks:
+      gem_net:
+        ipv4_address: 172.28.1.2
+networks:
+  gem_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
