@@ -6,9 +6,9 @@ namespace GEM.PowerPlant.Api.Filters
 {
     public class GlobalErrorFilter : IAsyncActionFilter
     {
-        private readonly ILogger<filterTest> logger;
+        private readonly ILogger<GlobalErrorFilter> logger;
 
-        public GlobalErrorFilter(ILogger<filterTest> logger)
+        public GlobalErrorFilter(ILogger<GlobalErrorFilter> logger)
         {
             this.logger = logger;
         }
