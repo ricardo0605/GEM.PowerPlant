@@ -1,30 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace GEM.PowerPlant.Api.Filters
 {
-    public class GlobalErrorFilter : ActionFilterAttribute
+    public class GlobalErrorFilter : IAsyncActionFilter
     {
-        private readonly ILogger<GlobalErrorFilter> _logger;
+        private readonly ILogger<filterTest> logger;
 
-        public GlobalErrorFilter(ILogger<GlobalErrorFilter> logger)
+        public GlobalErrorFilter(ILogger<filterTest> logger)
         {
-            _logger = logger;
+            this.logger = logger;
         }
-
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context,
+                                                 ActionExecutionDelegate next)
         {
-            if (!filterContext.ModelState.IsValid)
-            {
-                _logger.LogWarning("Add detailed info to help documentation text to guide api consumer.");
-            }
+            // logic before action
 
-            if (filterContext.Exception != null)
-            {
-                _logger.LogError(filterContext.Exception.StackTrace);
-            }
+            await next(); // the actual action
 
-            base.OnActionExecuted(filterContext);
+            // logic after the action
         }
     }
 }

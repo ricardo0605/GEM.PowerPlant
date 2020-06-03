@@ -16,8 +16,6 @@ namespace GEM.PowerPlant.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            logger.LogInformation("Get on GEM.PowerPlant.Api HealthCheck endpoint.");
-
             return Ok("GEM.PowerPlant.Api is running.");
         }
     }

@@ -35,9 +35,6 @@ namespace GEM.PowerPlant.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Post([FromBody] RequestPayload request)
         {
-
-            logger.LogInformation("You requested the POST method for ProductPlan with {request}", request);
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
