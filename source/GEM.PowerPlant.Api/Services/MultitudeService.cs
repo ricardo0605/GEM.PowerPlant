@@ -21,7 +21,6 @@ namespace GEM.PowerPlant.Api.Services
 
         public IEnumerable<ResponseDetail> SolveUnitCommitment(RequestPayload payload)
         {
-            float demandedLoad = payload.Load;
             var multitudes = new List<Multitude>();
 
             foreach (var item in payload.PowerPlants)
@@ -43,45 +42,48 @@ namespace GEM.PowerPlant.Api.Services
                 }
             }
 
-            multitudes = multitudes.OrderBy(m => m.MegaWattCostPerHour).ThenByDescending(m => m.Pmax).ToList();
+            SetCommitment(payload.Load, ref multitudes);
 
-            var arr = multitudes.ToArray();
+            return mapper.Map<IEnumerable<ResponseDetail>>(multitudes);
+        }
+
+        private static void SetCommitment(float demandedLoad, ref List<Multitude> multitudes)
+        {
+            var powerPlants = multitudes.OrderBy(m => m.MegaWattCostPerHour).ThenByDescending(m => m.Pmax).ToArray();
             var nextPmin = 0.0f;
 
-            for (int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < powerPlants.Length; i++)
             {
                 if (demandedLoad > 0)
                 {
-                    if (demandedLoad >= arr[i].Power)
+                    if (demandedLoad >= powerPlants[i].Power)
                     {
-                        if (arr[i + 1].Pmin > (demandedLoad - arr[i].Power))
+                        if (powerPlants[i + 1].Pmin > (demandedLoad - powerPlants[i].Power))
                         {
-                            nextPmin = demandedLoad - arr[i + 1].Pmin;
+                            nextPmin = demandedLoad - powerPlants[i + 1].Pmin;
                         }
                         else
                         {
-                            nextPmin = arr[i].Power;
+                            nextPmin = powerPlants[i].Power;
                         }
 
                         demandedLoad -= nextPmin;
-                        arr[i].Power = nextPmin;
+                        powerPlants[i].Power = nextPmin;
                     }
                     else
                     {
-                        if (demandedLoad >= arr[i].Pmin && demandedLoad <= arr[i].Power)
+                        if (demandedLoad >= powerPlants[i].Pmin && demandedLoad <= powerPlants[i].Power)
                         {
-                            arr[i].Power = demandedLoad;
+                            powerPlants[i].Power = demandedLoad;
                             demandedLoad -= demandedLoad;
                         }
                     }
                 }
                 else
                 {
-                    arr[i].Power = default;
+                    powerPlants[i].Power = default;
                 }
             }
-
-            return mapper.Map<IEnumerable<ResponseDetail>>(multitudes);
         }
 
         private static void AddGasFired(Fuels fuels, List<Multitude> multitudes, Dtos.PowerPlant item)
