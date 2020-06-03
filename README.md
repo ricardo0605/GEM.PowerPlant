@@ -20,5 +20,5 @@ The solution was built using the following technologies:
 1. Extract the zip file
 2. cd ./GEM.PowerPlant
 3. docker-compose up
-4. test the api and seq
-5. docker-compose down
+
+Note: When finishing the tests, run docker-compose down.
