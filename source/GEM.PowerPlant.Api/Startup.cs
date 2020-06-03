@@ -35,6 +35,18 @@ namespace GEM.PowerPlant.Api
             {
                 options.Filters.Add(typeof(GlobalErrorFilter));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+            {
+                Version = "v1",
+                Title = "GEM - Power Plant",
+                Description = "Powerplant-Coding-Challenge",
+                Contact = new Swashbuckle.AspNetCore.Swagger.Contact
+                {
+                    Name = "Ricardo Silveira de Casto Pires",
+                    Email = "ricardo0605@gmail.com"
+                }
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +58,13 @@ namespace GEM.PowerPlant.Api
             }
 
             app.UseSerilogRequestLogging();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "GEM Power Plant - Version 1");
+            });
 
             app.UseMvc();
         }
